@@ -1,6 +1,6 @@
 from bardapi import Bard
 
-token = 'YAgJWHC1gFM8l0qRXzzBVkgXwLaukaAlUMQkivbjQUid9taadVsy4Q6PP-GnmRe6zaXPQg.'
+token = 'YwgJWDYPjj-CbbOmblCEv8NTJiotYOVszCPbVs2jdmsGXNJpATP4-vJinjMSYePh1WtEHw.'
 bard = Bard(token=token)
 
 def chat(text):

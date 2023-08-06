@@ -4,7 +4,7 @@ import os
 import customtkinter
 from tkinter import *
 import asyncio
-
+from threading import Thread
 # Intial datas
 FONT = "Helvetica"
 Number = 0 
@@ -63,8 +63,17 @@ class ChatApplication:
     def _on_enter_pressed(self,*args):
         # Button callback handler
         msg = self.msg_entry.get()
-        self._insert_message(msg)
-        
+        thread = Thread(target=self._insert_message, args=[msg])
+        thread.start()
+
+    def response(self, msg):
+        # Send request and get response
+        eng_trans = Translate(msg).ToEnglish() if self.language.get() != "English" else msg
+        bard_resp = chat(eng_trans)
+        amh_trans = Translate(bard_resp).ToAmharic() if self.language.get() != "English" else bard_resp
+	
+        return amh_trans
+
     def _insert_message(self, msg):
         global Number
         if not msg:
@@ -78,7 +87,6 @@ class ChatApplication:
         self.text_widget.see(END)
         self.msg_entry.delete(0,"end")
 
-        # Send request and get response
         eng_trans = Translate(msg).ToEnglish() if self.language.get() != "English" else msg
         bard_resp = chat(eng_trans)
         amh_trans = Translate(bard_resp).ToAmharic() if self.language.get() != "English" else bard_resp
@@ -92,8 +100,8 @@ class ChatApplication:
         # Generate synthesis sound of response and play it
         if self.synthesis.get() == "Enable":
             tts = TextToSpeech(amh_trans,self.language.get(),f"cache/output{Number}.mp3")
-            asyncio.get_event_loop().run_until_complete(tts.synthesis())
-            asyncio.get_event_loop().run_until_complete(tts.play())
+            tts.synthesis()
+            tts.play()
             Number = 1 if Number == 0 else 0
             try: os.remove(f"cache/output{Number}.mp3")
             except Exception: pass
