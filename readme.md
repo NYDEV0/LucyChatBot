@@ -1,6 +1,5 @@
 # **LUCY CHAT BOT**
-
-### **| Lucy Chat Bot** is a simple Python chat bot program that utilizes the libraries Bard and CustomTkinter for its graphical user interface (GUI).
+ **| Lucy Chat Bot** is a simple Python chat bot program that utilizes the libraries Bard and CustomTkinter for its graphical user interface (GUI).
 
 #
 
