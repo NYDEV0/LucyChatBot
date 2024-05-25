@@ -3,30 +3,19 @@ import re
 import urllib.parse
 import urllib.request
 
-# Header
-agent = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
 class Main():
-
     def __init__(self, text:str, tl:str, sl:str):
         self.text = text
         self.tl = tl
         self.sl = sl
 
     def translate(self) -> str:
-        """
-        Take English text and send it to the Google website, then retrieve the translated Amharic data from the Google website and vice versa.
-        Args:
-            text: The text to be translated to Amharic.
-            tl: The base language.
-            sl: The final translated language form.
-        Returns:
-            Translated version.
-        """
         link = f"https://translate.google.com/m?tl=%s&sl=%s&q=%s"
         to_translate = urllib.parse.quote(self.text)
         link = link % (self.tl,self.sl,to_translate)
-        request = urllib.request.Request(link, headers=agent)
+        request = urllib.request.Request(link, headers=header)
         raw_data = urllib.request.urlopen(request).read()
         data = raw_data.decode("utf-8")
         expr = r'(?s)class="(?:t0|result-container)">(.*?)<'
@@ -38,7 +27,6 @@ class Main():
         return html.unescape(text)
 
 class Translate():
-    
     def __init__(self, text):
         self.text = text
 
@@ -47,4 +35,3 @@ class Translate():
     
     def ToEnglish(self):
         return Main(self.text,"en","am").translate()
-    

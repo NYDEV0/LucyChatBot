@@ -1,1 +1,1 @@
-gemini_key = 'AIzaSyAp9M2X3Mr4haT-aEpEadosDp38C2Thccg'
+gemini_key = '' # API key from https://aistudio.google.com/app/apikey
