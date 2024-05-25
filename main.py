@@ -1,10 +1,10 @@
 from __init__ import *
-import asyncio
 import os
 import customtkinter
 from tkinter import *
-import asyncio
 from threading import Thread
+from helpers.gemini import Gemini 
+
 # Intial datas
 FONT = "Helvetica"
 Number = 0 
@@ -14,14 +14,14 @@ class ChatApplication:
     def __init__(self):
         self.window = customtkinter.CTk() 
         self._setup_main_window()
-        
+        self.gemini = Gemini()
+
     def run(self):
         self.window.mainloop()
         
     def _setup_main_window(self):
         customtkinter.set_appearance_mode("dark")
         self.window.title("LUCY CHAT BOT")
-        self.window.iconbitmap("images/icon.ico")
         self.window.geometry("1000x550")
         
         # Head label
@@ -69,8 +69,8 @@ class ChatApplication:
     def response(self, msg):
         # Send request and get response
         eng_trans = Translate(msg).ToEnglish() if self.language.get() != "English" else msg
-        bard_resp = chat(eng_trans)
-        amh_trans = Translate(bard_resp).ToAmharic() if self.language.get() != "English" else bard_resp
+        gemini_response = self.gemini.get_response(eng_trans)
+        amh_trans = Translate(gemini_response).ToAmharic() if self.language.get() != "English" else gemini_response 
 	
         return amh_trans
 
@@ -88,8 +88,8 @@ class ChatApplication:
         self.msg_entry.delete(0,"end")
 
         eng_trans = Translate(msg).ToEnglish() if self.language.get() != "English" else msg
-        bard_resp = chat(eng_trans)
-        amh_trans = Translate(bard_resp).ToAmharic() if self.language.get() != "English" else bard_resp
+        gemini_response = self.gemini.get_response(eng_trans)
+        amh_trans = Translate(gemini_response).ToAmharic() if self.language.get() != "English" else gemini_response 
 
         # Display response data
         msg2 = f"ሉሲ: {amh_trans}\n\n" if self.language.get() != "English" else f"Lucy: {amh_trans}\n\n"
