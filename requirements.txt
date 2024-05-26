@@ -1,4 +1,4 @@
-bardapi
+google-generativeai
 requests
 edge_tts
 pygame
